@@ -18,18 +18,15 @@ docker rm -f $(docker ps -a -q)
 
 ## Connect to a container terminal
   ```
-  bash -c clear && docker exec -it this_node sh
+  bash -c clear && docker exec -it smartbrains_node sh
   ```
 
-## Build roboapp
+## Create and start app
 
-Install create-react-app
-
-
-Create roboapp
+Create app
 
 ```
-create-react-app robofriends
+create-react-app smartbrains
 
 ```
 
@@ -44,6 +41,18 @@ npm start
 Install tachyons
 
 ```
+npm install --save tachyons
+//this removed all packages. I rebuilt docker and it fixed. Dunno. Maybe I should use install without save
+
 npm install tachyons
 
+```
+
+Tune Docker.
+
+https://medium.com/@McMenemy/react-docker-for-development-and-production-6cb50a1218c5
+
+
+```
+npm install --save react-tilt
 ```
