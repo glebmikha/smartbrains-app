@@ -3,7 +3,7 @@ import './ImageLinkForm.css';
 
 const ImageLinkForm = ({onInputChange, onButtonSubmit}) => {
   return (<div>
-    <p className='f3'>{'Smartbrains will detect face in your picture. Give it a try.'}</p>
+    <p className='f3'>{'SmartBrains will detect face in your picture. Give it a try.'}</p>
 
 
     <div className='center'>
