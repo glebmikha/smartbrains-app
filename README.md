@@ -1,5 +1,11 @@
 
 ```
+docker rm -f smartbrains_frontend
+```
+
+```
+docker-compose build --no-cache
+
 docker-compose up -d --build
 
 docker-compose up -d
@@ -8,7 +14,6 @@ docker-compose up -d
 
 docker-compose stop
 
-docker rm -f this_node
 
 
 To remove all containers
@@ -18,8 +23,13 @@ docker rm -f $(docker ps -a -q)
 
 ## Connect to a container terminal
   ```
-  bash -c clear && docker exec -it smartbrains_node sh
+  bash -c clear && docker exec -it smartbrains_frontend sh
   ```
+
+  ```
+  bash -c clear && docker exec -it smartbrains_backend sh
+  ```
+
 
 ## Create and start app
 
@@ -68,3 +78,8 @@ npm install clarifai
 ```
 
 https://secure.i.telegraph.co.uk/multimedia/archive/03249/archetypal-female-_3249633c.jpg
+
+
+#ENTRYPOINT while true; do echo hello world; sleep 1; done
+
+#RUN npm i #to not delete packages on npm install (locally)
