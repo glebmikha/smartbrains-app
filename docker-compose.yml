@@ -30,3 +30,12 @@ services:
         ports:
           - 3050:3050
         container_name: smartbrains_backend
+    db:
+        build:
+          context:      ./database
+          dockerfile:   Dockerfile
+        volumes:
+          - ./database/postgres_data:/var/lib/postgresql/data
+        ports:
+          - 5432:5432
+        container_name: smartbrains_db

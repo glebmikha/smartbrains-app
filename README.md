@@ -6,6 +6,8 @@ docker rm -f smartbrains_frontend
 ```
 docker-compose build --no-cache
 
+docker-compose build
+
 docker-compose up -d --build
 
 docker-compose up -d
@@ -13,7 +15,6 @@ docker-compose up -d
 ```
 
 docker-compose stop
-
 
 
 To remove all containers
