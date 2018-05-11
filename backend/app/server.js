@@ -2,6 +2,18 @@ const express = require('express')
 const app = express()
 var bodyParser = require('body-parser')
 var cors = require('cors')
+var knex = require('knex')
+
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host : 'db',
+    user : 'postgres',
+    password : '',
+    database : 'postgres'
+  }
+})
 
 const database = {
   users: [{
@@ -34,7 +46,6 @@ app.post('/signin', (req, res) => {
 app.post('/findface', (req, res) => {
   database.users.forEach(user => {
     if (user.email === req.body.email) {
-      console.log('true')
       user.entries++
       res.json(user)
     }
@@ -43,14 +54,22 @@ app.post('/findface', (req, res) => {
 
 
 app.post('/register', (req, res) => {
-  database.users.push({
-    id: '124',
-    name: req.body.name,
-    email: req.body.email,
-    entries: 0,
+
+  const { name, email, password} = req.body;
+
+  console.log('register',name, email, password);
+
+  db('users')
+  .returning('*')
+  .insert({
+    name: name,
+    email: email,
     joined: new Date()
   })
-  res.json(database.users[database.users.length - 1])
+  .then(user => {
+    res.json(user[0]);
+  })
+  .catch(err => res.status(400).json('unable to register'))
 })
 
 app.get('/profile/:userId', (req, res) => {

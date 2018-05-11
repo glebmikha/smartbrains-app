@@ -30,6 +30,8 @@ services:
         ports:
           - 3050:3050
         container_name: smartbrains_backend
+        depends_on:
+          - db
     db:
         build:
           context:      ./database

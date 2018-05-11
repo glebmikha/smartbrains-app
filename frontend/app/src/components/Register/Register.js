@@ -6,9 +6,9 @@ class Register extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      registerName: '',
-      registerEmail: '',
-      registerPassword: '',
+      name: '',
+      email: '',
+      password: '',
     }
   }
 
@@ -19,30 +19,35 @@ class Register extends React.Component {
   }
 
   onEmailChange = (event) => {
-    this.setState({registerEmail: event.target.value})
+    this.setState({email: event.target.value})
   }
 
   onPasswordChange = (event) => {
-    this.setState({registerPassword: event.target.value})
+    this.setState({password: event.target.value})
   }
 
   onNameChange = (event) => {
-    this.setState({registerName: event.target.value})
+    this.setState({name: event.target.value})
   }
 
   onSubmitRegister = () => {
+
+    const { name, email, password} = this.state;
+    console.log('on_submit',name, email, password);
 
     fetch('http://localhost:3050/register', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        name: this.state.registerName,
-        email: this.state.registerEmail,
-        password: this.state.registerPassword
+        name: name,
+        email: email,
+        password: password
       })
     })
     .then(response => response.json())
     .then(user => {
+      console.log('then user')
+      console.log(user);
       this.props.loadUser(user);
       this.props.onRouteChange('home');
 
