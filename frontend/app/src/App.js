@@ -104,7 +104,7 @@ class App extends Component {
         return response.json()})
       .then(user => {
         console.log(user);
-        this.setState(Object.assign(this.state.user, { entries: user.entries}))
+        this.setState(Object.assign(this.state.user, { entries: user}))
 
       })
 
