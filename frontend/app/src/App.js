@@ -24,27 +24,29 @@ const particlesOptions = {
 
 // initialize with your api key. This will also work in your browser via http://browserify.org/
 
-const app = new Clarifai.App({apiKey: 'ec8fecd871274b4691a7c55040336891'});
+
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: '',
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 
 class App extends Component {
 
 
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: '',
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -88,35 +90,42 @@ class App extends Component {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input})
 
-    app.models
-    .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    fetch('http://localhost:3050/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input,
+    })
+  })
+  .then(response => response.json())
+  .then(response => {
+
+    if (response) {
+      fetch('http://localhost:3050/findface', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: this.state.user.email,
+      })
+    })
     .then(response => {
+      return response.json()})
+    .then(user => {
+      console.log(user);
+      this.setState(Object.assign(this.state.user, { entries: user}))
 
-      if (response) {
-        fetch('http://localhost:3050/findface', {
-          method: 'post',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            email: this.state.user.email,
-        })
-      })
-      .then(response => {
-        return response.json()})
-      .then(user => {
-        console.log(user);
-        this.setState(Object.assign(this.state.user, { entries: user}))
+    })
+    .catch(console.log)
 
-      })
+    this.displayFaceBox(this.calculateFaceLocation(response))
+  }})
+  .catch(err => console.log(err));
 
-      this.displayFaceBox(this.calculateFaceLocation(response))
-    }})
-    .catch(err => console.log(err));
-
-  }
+}
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
